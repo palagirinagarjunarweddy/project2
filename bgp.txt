@@ -1,0 +1,89 @@
+R1:-
+
+conf t
+int f0/0
+ip add 192.168.1.1 255.255.255.0
+no sh
+exit
+
+int s2/0
+ip add 10.1.1.1 255.255.255.252
+no sh
+exit
+router bgp 100
+network 192.168.1.0 mask 255.255.255.0
+network 10.1.1.0 mask 255.255.255.252
+nei 10.1.1.2 remote-as 100
+exit
+
+
+R2:-
+
+conf t
+int f0/0
+ip add 192.168.2.1 255.255.255.0
+no sh
+exit
+int s2/0
+ip add 10.1.1.2 255.255.255.252
+no sh
+exit
+int s2/1
+ip add 11.1.1.1 255.255.255.252
+no sh
+exit
+
+router bgp 100
+network 192.168.2.0 mask 255.255.255.0
+network 10.1.1.0 mask 255.255.255.252
+nei 10.1.1.1 remote-as 100
+nei 11.1.1.2 remote-as 200
+exit
+
+R3:-
+
+conf t
+int f0/0
+ip add 192.168.3.1 255.255.255.0
+no sh
+exit
+int s2/0
+ip add 12.1.1.1 255.255.255.252
+no sh
+exit
+int s2/1
+ip add 11.1.1.2 255.255.255.252
+no sh
+exit
+
+router bgp 200
+network 192.168.3.0 mask 255.255.255.0
+network 12.1.1.0 mask 255.255.255.252
+nei 12.1.1.2 remote-as 200
+nei 11.1.1.1 remote-as 100
+exit
+
+
+R4:-
+
+conf t
+int f0/0
+ip add 192.168.4.1 255.255.255.0
+no sh
+exit
+int s2/0
+ip add 12.1.1.2 255.255.255.252
+no sh
+exit
+
+router bgp 200
+network 192.168.4.0 mask 255.255.255.0
+network 12.1.1.0 mask 255.255.255.252
+nei 12.1.1.1 remote-as 200
+exit
+
+
+
+
+
+
